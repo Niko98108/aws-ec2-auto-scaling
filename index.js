@@ -26,6 +26,7 @@ app.use('/', function(req, res) {
 });
 
 const server = http.createServer(app);
-const port = 5000;
-server.listen(port);
+
+const port = process.env.PORT || 3000;
+app.listen(port);
 console.debug('Server listening on port ' + port);
