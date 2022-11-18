@@ -29,4 +29,4 @@ const server = http.createServer(app);
 
 const port = 3000;
 app.listen(port);
-console.debug('Server listening on port ' + port);
+// console.debug('Server listening on port ' + port);
