@@ -74,7 +74,7 @@
       var xhr = new XMLHttpRequest();
 
       // Making our connection  
-      var url = 'http://localhost:3000/items/'+$id;
+      var url = 'https://aws-scalling.onrender.com/items/'+$id;
       xhr.open("GET", url, true);
 
       // function execute after request is successful 
@@ -145,7 +145,7 @@
     $.ajax({
 
           type: "PUT",
-          url: 'http://localhost:3000/items/'+id,
+          url: 'https://aws-scalling.onrender.com/items/'+id,
           data: formData,
           
           success: function (data) {
@@ -181,7 +181,7 @@
           .then((willDelete) => {
               if (willDelete) {
                   $.ajax({
-                      url :' http://localhost:3000/items/'+id,
+                      url :' https://aws-scalling.onrender.com/items/'+id,
                       method: 'DELETE',
                       success: function (data) {
                         console.log(data);
