@@ -15,6 +15,15 @@ let data = [
 // this api end-point of an API returns JSON data array
 router.get('/', function (req, res) {
     res.status(200).json(data);
+   
+    
+   
+});
+router.get('/books', function (req, res) {
+    // res.status(200).json(data);
+   
+    
+    res.render('books/index', { page: 'Available Books', data:data })
 });
 
 // READ
@@ -36,7 +45,7 @@ router.get('/:id', function (req, res) {
 // CREATE
 // this api end-point add new object to item list
 // that is add new object to `data` array
-router.post('/', function (req, res) {
+router.post('/create', function (req, res) {
     // get itemIds from data array
     let itemIds = data.map(item => item.id);
     // get orderNums from data array
@@ -60,11 +69,17 @@ router.post('/', function (req, res) {
 
     // push new item object to data array of items
     data.push(newItem);
-
+     console.log(req.body);
+     console.log(newItem);
     // return with status 201
     // 201 means Created. The request has been fulfilled and 
     // has resulted in one or more new resources being created. 
-    res.status(201).json(newItem);
+    // res.status(201).json(newItem);
+    // let data = newItem;
+    // res.render('books/index', { page: 'Available Books', data:data })
+    backURL=req.header('Referer') || '/';
+    // do your thang
+    res.redirect(backURL);
 });
 
 // UPDATE
@@ -83,23 +98,24 @@ router.put('/:id', function (req, res) {
     if (found) {
         let updated = {
             id: found.id,
-            title: req.body.title, // set value of `title` get from req
-            order: req.body.order, // set value of `order` get from req
-            author: req.body.author, // default value is set to false
+            title: req.body.title, 
+            order: req.body.order, 
+            author: req.body.author, 
             cost: req.body.cost,
         };
 
         // find index of found object from array of data
         let targetIndex = data.indexOf(found);
-
+        console.log(updated)
         // replace object from data list with `updated` object
         data.splice(targetIndex, 1, updated);
 
         // return with status 204
         // success status response code 204 indicates
         // that the request has succeeded
-       let x ={'massege': 'Book updated successfully'}
-        res.status(200).json(x);
+        let obj ={'status': 1}
+        res.status(200).json(obj);
+
     } else {
         res.sendStatus(404);
     }

@@ -1,0 +1,209 @@
+<%- include ('../partials/header'); -%>
+
+<main>
+ 
+  <div class="">
+    <table class="table  table-hover">
+      <h2>Add Books</h2>
+      <form action="/items/create" method="post" >
+        <div class="form-group">
+          <label for="name">Title:</label>
+          <input type="text" class="form-control" id="title" placeholder="Enter Title" name="title" required />
+          <input type="hidden" id="id" name="id" value="" />
+        </div>
+        <div class="form-group">
+          <label for="email">order:</label>
+          <input type="text" class="form-control" id="order" placeholder="Order Amount" name="order" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Author:</label>
+          <input type="text" class="form-control" id="author" placeholder="Enter Author Name" name="author" required />
+        </div>
+        <div class="form-group">
+          <label for="email">cost:</label>
+          <input type="text" class="form-control" id="cost" placeholder="Amount" name="cost" required />
+        </div>
+        <div class="form-group">
+        <button type="submit" id="save_button" class="btn btn-primary" >Save</button>
+        <button type="button" id="update_button" class="btn btn-primary" >Update</button>
+        <button type="reset" id="reset" class="btn btn-danger">Cancel</button></a>
+        <button type="button" id="demo" class="btn btn-dark">demo</button>
+      </div>
+      </form>
+      <h2><%= page %></h2>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Title</th>
+          <th>Order</th>
+          <th>Author</th>
+          <th>Cost</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach((book, index) =>{ %>
+        <tr>
+          <td><%= index += 1 %></td>
+          <td><%= book.title %></td>
+          <td><%= book.order %></td>
+          <td><%= book.author %></td>
+          <td><%= book.cost %></td>
+        
+        
+      
+          <td>
+            <button id="edit"  onclick="run(<%= book.id %> )" class="btn btn-sm btn-primary">Edit</button>
+            <button id="delete" onclick="delete_(<%= book.id %> )" class="btn btn-sm btn-danger">Delete</button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+
+<script>
+  function run($id) {
+
+
+    console.log($id);
+
+      // Creating Our XMLHttpRequest object 
+      var xhr = new XMLHttpRequest();
+
+      // Making our connection  
+      var url = 'http://localhost:3000/items/'+$id;
+      xhr.open("GET", url, true);
+
+      // function execute after request is successful 
+      xhr.onreadystatechange = function () {
+          if (this.readyState === 4 && this.status == 200) {
+
+        
+            console.log(this.responseText);
+            obj = JSON.parse(this.responseText);
+            console.log(obj.id)
+ // id: 3, title: 'Harry Potter',  order: 1, author: 'J. K. Rowling',cost:4000, createdOn: new Date() },
+            $("#title").val(obj.title);
+            $("#order").val(obj.order);
+            $("#author").val(obj.author);
+            $("#cost").val(obj.cost);
+            $("#id").val(obj.id);
+
+            $("#title_").val(obj.title);
+            $("#order_").val(obj.order);
+            $("#author_").val(obj.author);
+            $("#cost_").val(obj.cost);
+            $("#id_").val(obj.id);
+
+            $("#save_button").hide();
+            $("#update_button").show();
+           
+
+
+        
+          }
+      }
+      // Sending our request 
+      xhr.send();
+  }
+
+  $(document).ready(function(){
+    $("#update_button").hide();
+
+  
+  $("#reset").click(function(){
+    $("#update_button").hide();
+    $("#save_button").show();
+  });
+
+  $("#demo").click(function(){
+
+    $("#title").val("Ape Gama");
+    $("#order").val(1);
+    $("#author").val("Martin Wickramasinghe");
+    $("#cost").val(1500);
+   
+  });
+ 
+});
+
+ /* Update Books */
+
+ $("#update_button").click(function (event) {
+  var formData = {
+      id: $("#id").val(),
+      title: $("#title").val(),
+      order: $("#order").val(),
+      author: $("#author").val(),
+      cost: $("#cost").val()
+    };
+    console.log(formData)
+    var id = $('#id').val();
+    $.ajax({
+
+          type: "PUT",
+          url: 'http://localhost:3000/items/'+id,
+          data: formData,
+          
+          success: function (data) {
+
+              // var result = jQuery.parseJSON(data); 
+              console.log(data)
+              if(data.status == 1){
+
+                window.location.reload();
+
+              }
+              
+
+          },
+          error: function (e) {
+
+          }
+      });
+ });   
+
+
+   // Food Item Type Delete
+   function delete_(id){
+
+      console.log(id);
+      swal({
+          title: "Are you sure?",
+          text: "Do you realy want to Delete this?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+      })
+          .then((willDelete) => {
+              if (willDelete) {
+                  $.ajax({
+                      url :' http://localhost:3000/items/'+id,
+                      method: 'DELETE',
+                      success: function (data) {
+                        console.log(data);
+                          swal("Deleted!", {
+                              icon: "success",
+                              });
+
+                        location.reload().delay(1000).fadeIn();
+                          },
+                          error: function (jqXHR, exception) {
+                              swal("fail");
+                          }
+                      });
+                  } else {
+                      swal("Safe!");
+                  }
+              });
+      }   
+
+
+
+
+</script>
+
+<%- include ('../partials/footer'); -%>
