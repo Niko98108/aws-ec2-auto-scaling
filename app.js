@@ -1,8 +1,8 @@
 // import required essentials
 const http = require('http');
 const express = require('express');
-var cors = require('cors');
 var bodyParser = require('body-parser')
+require('dotenv').config()
 // import `items` from `routes` folder 
 const itemsRouter = require('./routes/books');
 
@@ -29,7 +29,7 @@ app.use('/', function(req, res) {
     // res.send('node-ex-api works :-)');
     res.render('pages/about', { page: 'Book Store'})
 });
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
 
 // listen for request
 app.listen(port, () =>
