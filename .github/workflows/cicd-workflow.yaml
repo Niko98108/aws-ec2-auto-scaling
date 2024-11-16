@@ -31,4 +31,4 @@ jobs:
         run: docker rm -f nodejs-book-app-container 
 
       - name: Run Docker Container
-        run: docker run -d -p 5000:5000 -name nodejs-book-app-container nisal98/nodejs-book-app
+        run: docker run -d -p 5000:5000 --name nodejs-book-app-container nisal98/nodejs-book-app
