@@ -27,7 +27,8 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 # Run the application as a non-root user.
 USER node
-
+#copy env file to image
+COPY example.env .env
 # Copy the rest of the source files into the image.
 COPY . .
 
